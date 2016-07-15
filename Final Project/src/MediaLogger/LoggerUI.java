@@ -107,7 +107,7 @@ public class LoggerUI {
    }
 
    
-	//Insert media into database
+	//Insert media into mysql database
 	public void MediaInsert(String type, String title, String director, String category) throws Exception
    {
 	Class.forName("com.mysql.jdbc.Driver");
