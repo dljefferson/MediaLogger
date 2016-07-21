@@ -1,5 +1,7 @@
 package MediaLogger;
 
+
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -49,16 +51,18 @@ public class LoggerUI {
 		frmLoggerUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLoggerUI.getContentPane().setLayout(null);
 		
+		
+		//Log Movie
 		JButton btnLogMovie = new JButton("Log Movie");
 		btnLogMovie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 		    
-				
 			String title = getMedia("Enter Movie Title",  "Title Dialog");
 		    String director = getMedia("Enter Director",  "Director Dialog");	
 		    String category = getMedia("Enter Category",  "Category Dialog");
-			try {
-				MediaInsert("Movie", title, director, category);
+			
+		    try {
+				MediaInsert("Movie", title, director, category, "", "");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 				e.printStackTrace();
@@ -68,16 +72,43 @@ public class LoggerUI {
 		btnLogMovie.setBounds(118, 31, 208, 23);
 		frmLoggerUI.getContentPane().add(btnLogMovie);
 		
+		//Log Book
 		JButton btnLogBook = new JButton("Log Book");
 		btnLogBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				String title = getMedia("Enter Book Title",  "Title Dialog");
+			    String author = getMedia("Enter Author",  "Author Dialog");	
+			    String category = getMedia("Enter Category",  "Category Dialog");
+				
+			    try {
+					MediaInsert("Book", title, "", category, author,"");
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		});
 		btnLogBook.setBounds(118, 65, 208, 23);
 		frmLoggerUI.getContentPane().add(btnLogBook);
 		
+		
+		//Log Music
 		JButton btnLogMusic = new JButton("Log Music");
+		btnLogMusic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String album = getMedia("Enter Album Title",  "Title Dialog");
+			    String author = getMedia("Enter Author", "Author Dialog");	
+			    String category = getMedia("Enter Category",  "Category Dialog");
+				try {
+					MediaInsert("Music", "", "", category, author, album);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		});
 		btnLogMusic.setBounds(118, 99, 208, 23);
 		frmLoggerUI.getContentPane().add(btnLogMusic);
 		
@@ -106,9 +137,7 @@ public class LoggerUI {
 
    }
 
-   
-	//Insert media into mysql database
-	public void MediaInsert(String type, String title, String director, String category) throws Exception
+   public void MediaInsert(String type, String title, String director, String category, String author, String album) throws Exception
    {
 	Class.forName("com.mysql.jdbc.Driver");
 		
@@ -116,7 +145,7 @@ public class LoggerUI {
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/media_db?autoReconnect=true&useSSL=false", "root", "dljz8x");
 		
 		//Here we create a query
-	     PreparedStatement statement = con.prepareStatement("Insert into media(type, title, director, category) VALUES('"+type+"', '"+title+"', '"+director+"', '"+category+"')");
+	     PreparedStatement statement = con.prepareStatement("Insert into media(type, title, director, category, author, album) VALUES('"+type+"', '"+title+"', '"+director+"', '"+category+"', '"+author+"', '"+album+"')");
 	    statement.executeUpdate();
    }
 
